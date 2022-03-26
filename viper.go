@@ -1585,6 +1585,14 @@ func (v *Viper) SafeWriteConfigAs(filename string) error {
 	return v.writeConfig(filename, false)
 }
 
+func (v *Viper) Marshal(configType string) (*bytes.Buffer, error) {
+	data, err := encoderRegistry.Encode(configType, v.AllSettings())
+	if err != nil {
+		return nil, err
+	}
+	return bytes.NewBuffer(data), nil
+}
+
 func (v *Viper) writeConfig(filename string, force bool) error {
 	v.logger.Info("attempting to write configuration to file")
 
